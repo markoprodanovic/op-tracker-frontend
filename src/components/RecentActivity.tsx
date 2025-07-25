@@ -50,7 +50,6 @@ export default function RecentActivity({
       });
 
       if (response.ok) {
-        // Remove from local state
         setWatchHistory((prev) => prev.filter((entry) => entry.id !== entryId));
         onEntryDeleted();
       } else {
@@ -79,13 +78,12 @@ export default function RecentActivity({
       const data = await response.json();
 
       if (response.ok) {
-        // Update the entry in local state
         setWatchHistory((prev) =>
           prev.map((entry) =>
             entry.id === entryId ? { ...entry, watched_date: newDate } : entry
           )
         );
-        setEditingEntry(null); // Close edit mode
+        setEditingEntry(null);
       } else {
         alert(`Failed to update: ${data.error}`);
       }
@@ -102,19 +100,25 @@ export default function RecentActivity({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="text-gray-500">Loading recent activity...</div>
+        <div className="text-gray-500 dark:text-gray-400 transition-colors">
+          Loading recent activity...
+        </div>
       </div>
     );
   }
 
   if (error) {
-    return <div className="text-red-600 text-center py-4">{error}</div>;
+    return (
+      <div className="text-red-600 dark:text-red-400 text-center py-4 transition-colors">
+        {error}
+      </div>
+    );
   }
 
   if (watchHistory.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
-        <Calendar className="mx-auto h-12 w-12 text-gray-300 mb-4" />
+      <div className="text-center py-8 text-gray-500 dark:text-gray-400 transition-colors">
+        <Calendar className="mx-auto h-12 w-12 text-gray-300 dark:text-gray-600 mb-4 transition-colors" />
         <p>No episodes watched yet.</p>
         <p className="text-sm">
           Start logging episodes to see your activity here!
@@ -134,19 +138,19 @@ export default function RecentActivity({
               onCancel={() => setEditingEntry(null)}
             />
           ) : (
-            <Card key={entry.id} className="p-0">
+            <Card className="p-0 dark:bg-gray-800 dark:border-gray-700 transition-colors">
               <CardContent className="p-3">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="font-medium text-sm">
+                    <p className="font-medium text-sm dark:text-white transition-colors">
                       Episode {entry.episode?.id}: {entry.episode?.title}
                     </p>
                     {entry.episode?.arc_title && (
-                      <p className="text-xs text-gray-600 mt-0.5">
+                      <p className="text-xs text-gray-600 dark:text-gray-300 mt-0.5 transition-colors">
                         Arc: {entry.episode.arc_title}
                       </p>
                     )}
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 transition-colors">
                       Watched:{" "}
                       {format(parseISO(entry.watched_date), "MMM dd, yyyy")}
                     </p>
@@ -157,15 +161,15 @@ export default function RecentActivity({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 dark:hover:bg-gray-700 transition-colors"
                       onClick={() => setEditingEntry(entry.id)}
                     >
-                      <Pencil className="h-3 w-3" />
+                      <Pencil className="h-3 w-3 dark:text-gray-300" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                      className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 transition-colors"
                       onClick={() => deleteEntry(entry.id)}
                     >
                       <Trash2 className="h-3 w-3" />
@@ -180,7 +184,11 @@ export default function RecentActivity({
 
       {watchHistory.length === 10 && (
         <div className="text-center pt-2">
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            className="dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
+          >
             View All History
           </Button>
         </div>

@@ -5,8 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, Search, Plus } from "lucide-react";
+import { Calendar as CalendarIcon, Search, Plus } from "lucide-react";
 import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface EpisodeLoggerProps {
   onEpisodeLogged: () => void;
@@ -65,7 +72,7 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // Rest of the component remains the same...
+  // Log episode function
   const logEpisode = async () => {
     if (!selectedEpisode) return;
 
@@ -80,7 +87,7 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
         },
         body: JSON.stringify({
           episode_id: selectedEpisode.id,
-          watched_date: watchedDate,
+          watched_date: format(watchedDate, "yyyy-MM-dd"), // Format for API
         }),
       });
 
@@ -108,48 +115,50 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
 
   return (
     <div className="space-y-4">
-      {/* Updated Search Input with better placeholder */}
+      {/* Search Input with Dark Mode */}
       <div className="space-y-2">
-        <Label htmlFor="episode-search">Search Episodes</Label>
+        <Label htmlFor="episode-search" className="dark:text-gray-200">
+          Search Episodes
+        </Label>
         <div className="relative">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:text-gray-500" />
           <Input
             id="episode-search"
             placeholder="Search by episode number (e.g. 1000) or title/arc..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
           />
         </div>
         {/* Helper text */}
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-500 dark:text-gray-400 transition-colors">
           💡 Tip: Type a number to search by episode ID, or text to search
           titles/arcs
         </p>
       </div>
 
-      {/* Rest of the component remains exactly the same... */}
+      {/* Search Results with Dark Mode */}
       {episodes.length > 0 && (
         <div className="space-y-2 max-h-64 overflow-y-auto">
-          <Label>Select Episode</Label>
+          <Label className="dark:text-gray-200">Select Episode</Label>
           {episodes.map((episode) => (
             <Card
               key={episode.id}
-              className={`cursor-pointer transition-colors p-1 ${
+              className={`cursor-pointer transition-colors p-0 border ${
                 selectedEpisode?.id === episode.id
-                  ? "border-blue-500 bg-blue-50"
-                  : "hover:bg-gray-50"
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-400"
+                  : "hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-800 dark:border-gray-600"
               }`}
               onClick={() => setSelectedEpisode(episode)}
             >
               <CardContent className="p-3">
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="font-medium">
+                    <p className="font-medium dark:text-white transition-colors">
                       Episode {episode.id}: {episode.title}
                     </p>
                     {episode.arc_title && (
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors">
                         Arc: {episode.arc_title}
                       </p>
                     )}
@@ -161,47 +170,78 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
         </div>
       )}
 
+      {/* Selected Episode Section with Dark Mode */}
       {selectedEpisode && (
-        <div className="space-y-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="space-y-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800/30 transition-colors">
           <div>
-            <Label className="text-blue-700">Selected Episode</Label>
-            <p className="font-medium text-blue-900">
+            <Label className="text-blue-700 dark:text-blue-300 transition-colors">
+              Selected Episode
+            </Label>
+            <p className="font-medium text-blue-900 dark:text-blue-100 transition-colors">
               Episode {selectedEpisode.id}: {selectedEpisode.title}
             </p>
             {selectedEpisode.arc_title && (
-              <p className="text-sm text-blue-700">
+              <p className="text-sm text-blue-700 dark:text-blue-300 transition-colors">
                 Arc: {selectedEpisode.arc_title}
               </p>
             )}
           </div>
 
+          {/* ShadCN Date Picker */}
           <div className="space-y-2">
-            <Label htmlFor="watched-date">Date Watched</Label>
-            <div className="relative">
-              <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <Input
-                id="watched-date"
-                type="date"
-                value={watchedDate}
-                onChange={(e) => setWatchedDate(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+            <Label className="dark:text-blue-300 transition-colors">
+              Date Watched
+            </Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-start text-left font-normal dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700",
+                    !watchedDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {watchedDate ? (
+                    format(watchedDate, "PPP")
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-auto p-0 dark:bg-gray-800 dark:border-gray-600"
+                align="start"
+              >
+                <Calendar
+                  mode="single"
+                  selected={watchedDate}
+                  onSelect={(date) => date && setWatchedDate(date)}
+                  initialFocus
+                  className="dark:bg-gray-800"
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
-          <Button onClick={logEpisode} disabled={isLoading} className="w-full">
+          <Button
+            onClick={logEpisode}
+            disabled={isLoading}
+            className="w-full dark:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
+          >
             <Plus className="w-4 h-4 mr-2" />
             {isLoading ? "Logging..." : "Log Episode"}
           </Button>
         </div>
       )}
 
+      {/* Success/Error Message with Dark Mode */}
       {message && (
         <div
-          className={`p-3 rounded-lg ${
+          className={`p-3 rounded-lg border transition-colors ${
             message.includes("✅")
-              ? "bg-green-50 text-green-800"
-              : "bg-red-50 text-red-800"
+              ? "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 border-green-200 dark:border-green-800/30"
+              : "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 border-red-200 dark:border-red-800/30"
           }`}
         >
           {message}

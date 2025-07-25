@@ -41,7 +41,7 @@ export default function ProgressTracker({
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className="dark:bg-gray-800 transition-colorsj">
         <CardContent className="p-6">
           <div className="flex items-center justify-center">
             <div className="text-gray-500">Loading progress...</div>
@@ -53,7 +53,7 @@ export default function ProgressTracker({
 
   if (error) {
     return (
-      <Card>
+      <Card className="dark:bg-gray-800 transition-colors">
         <CardContent className="p-6">
           <div className="text-red-600 text-center">{error}</div>
         </CardContent>
@@ -63,7 +63,7 @@ export default function ProgressTracker({
 
   if (!progressData) {
     return (
-      <Card>
+      <Card className="dark:bg-gray-800 transition-colors">
         <CardContent className="p-6">
           <div className="text-center text-gray-500">
             No progress data available
@@ -82,90 +82,94 @@ export default function ProgressTracker({
   } = progressData;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Target className="h-5 w-5 text-blue-600" />
-          One Piece Progress
-        </CardTitle>
-      </CardHeader>
+    <Card className="dark:bg-gray-800 transition-colors">
       <CardContent className="space-y-6">
-        {/* Main Progress Bar with Ship */}
+        {/* Main Progress Bar */}
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors">
               Series Progress
             </span>
             <span
-              className={`text-sm font-bold ${
-                isCaughtUp ? "text-green-600" : "text-blue-600"
+              className={`text-sm font-bold transition-colors ${
+                isCaughtUp
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-blue-600 dark:text-blue-400"
               }`}
             >
               {progressPercentage}%
             </span>
           </div>
 
-          {/* <div className="relative"> */}
           <Progress
             value={progressPercentage}
-            className="h-3 bg-blue-100 [&>div]:bg-gradient-to-r [&>div]:from-sky-400 [&>div]:to-blue-600 [&>div]:shadow-md"
+            className="h-3 bg-blue-100 dark:bg-gray-700 [&>div]:bg-gradient-to-r [&>div]:from-sky-400 [&>div]:to-blue-600 dark:[&>div]:from-blue-400 dark:[&>div]:to-cyan-400 [&>div]:shadow-md transition-colors"
           />
 
-          <div className="flex justify-between text-xs text-gray-500">
+          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-50 transition-colors">
             <span>Episode 1</span>
             <span>Episode {latestAvailable} (Latest)</span>
           </div>
         </div>
 
-        {/* Progress Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Highest Watched */}
-          <div className="text-center p-3 bg-blue-50 rounded-lg">
+          {/* Latest Watched */}
+          <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800/30 transition-colors">
             <div className="flex items-center justify-center gap-2 mb-1">
-              <TrendingUp className="h-4 w-4 text-blue-600" />
-              <span className="text-xs font-medium text-blue-700">
-                Highest Watched
+              <TrendingUp className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
+                Latest Watched
               </span>
             </div>
-            <p className="text-lg font-bold text-blue-900">
+            <p className="text-lg font-bold text-blue-900 dark:text-blue-100">
               Episode {highestWatched}
             </p>
           </div>
 
           {/* Total Episodes */}
-          <div className="text-center p-3 bg-purple-50 rounded-lg">
+          <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-100 dark:border-purple-800/30 transition-colors">
             <div className="flex items-center justify-center gap-2 mb-1">
-              <Trophy className="h-4 w-4 text-purple-600" />
-              <span className="text-xs font-medium text-purple-700">
+              <Trophy className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+              <span className="text-xs font-medium text-purple-700 dark:text-purple-300">
                 Episodes Tracked
               </span>
             </div>
-            <p className="text-lg font-bold text-purple-900">{totalWatched}</p>
+            <p className="text-lg font-bold text-purple-900 dark:text-purple-100">
+              {totalWatched}
+            </p>
           </div>
 
-          {/* Episodes Behind */}
+          {/* Episodes Remaining */}
           <div
-            className={`text-center p-3 rounded-lg ${
-              isCaughtUp ? "bg-green-50" : "bg-orange-50"
+            className={`text-center p-3 rounded-lg border transition-colors ${
+              isCaughtUp
+                ? "bg-green-50 dark:bg-green-900/20 border-green-100 dark:border-green-800/30"
+                : "bg-orange-50 dark:bg-orange-900/20 border-orange-100 dark:border-orange-800/30"
             }`}
           >
             <div className="flex items-center justify-center gap-2 mb-1">
               <Target
                 className={`h-4 w-4 ${
-                  isCaughtUp ? "text-green-600" : "text-orange-600"
+                  isCaughtUp
+                    ? "text-green-600 dark:text-green-400"
+                    : "text-orange-600 dark:text-orange-400"
                 }`}
               />
               <span
                 className={`text-xs font-medium ${
-                  isCaughtUp ? "text-green-700" : "text-orange-700"
+                  isCaughtUp
+                    ? "text-green-700 dark:text-green-300"
+                    : "text-orange-700 dark:text-orange-300"
                 }`}
               >
-                {isCaughtUp ? "Status" : "Episodes Behind"}
+                {isCaughtUp ? "Status" : "Episodes Remaining"}
               </span>
             </div>
             <p
               className={`text-lg font-bold ${
-                isCaughtUp ? "text-green-900" : "text-orange-900"
+                isCaughtUp
+                  ? "text-green-900 dark:text-green-100"
+                  : "text-orange-900 dark:text-orange-100"
               }`}
             >
               {isCaughtUp ? "Caught Up!" : latestAvailable - highestWatched}
@@ -175,10 +179,10 @@ export default function ProgressTracker({
 
         {/* Status Message */}
         <div
-          className={`text-center p-3 rounded-lg border ${
+          className={`text-center p-3 rounded-lg border transition-colors ${
             isCaughtUp
-              ? "bg-green-50 border-green-200 text-green-800"
-              : "bg-blue-50 border-blue-200 text-blue-800"
+              ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800/30 text-green-800 dark:text-green-200"
+              : "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800/30 text-blue-800 dark:text-blue-200"
           }`}
         >
           {isCaughtUp ? (

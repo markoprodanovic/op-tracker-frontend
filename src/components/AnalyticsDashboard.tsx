@@ -188,15 +188,18 @@ export default function AnalyticsDashboard({
     <div className="space-y-6">
       {/* Stats Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="p-0">
+        {/* Total Episodes */}
+        <Card className="p-0 dark:bg-gray-800 dark:border-gray-700 transition-colors">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <TrendingUp className="h-5 w-5 text-blue-600" />
+              <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg border border-blue-200/50 dark:border-blue-700/50 transition-colors">
+                <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Total Episodes</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors">
+                  Total Episodes
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">
                   {totalEpisodes}
                 </p>
               </div>
@@ -204,15 +207,18 @@ export default function AnalyticsDashboard({
           </CardContent>
         </Card>
 
-        <Card className="p-0">
+        {/* Episodes This Week */}
+        <Card className="p-0 dark:bg-gray-800 dark:border-gray-700 transition-colors">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <CalendarDays className="h-5 w-5 text-green-600" />
+              <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg border border-green-200/50 dark:border-green-700/50 transition-colors">
+                <CalendarDays className="h-5 w-5 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">This Week</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors">
+                  This Week
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">
                   {episodesThisWeek}
                 </p>
               </div>
@@ -255,7 +261,7 @@ export default function AnalyticsDashboard({
 
       {/* Chart */}
       {chartData.length > 0 ? (
-        <Card>
+        <Card className="dark:bg-gray-800">
           <CardHeader>
             <CardTitle className="text-lg">Episodes Watched by Arc</CardTitle>
           </CardHeader>

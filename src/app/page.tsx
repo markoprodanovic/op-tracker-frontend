@@ -22,10 +22,10 @@ export default function HomePage() {
           </div>
           <div className="flex justify-center py-6">
             <Image
-              src="/luffy.jpg"
+              src="/luffy-outline.png"
               alt="Luffy"
-              width={150}
-              height={100}
+              width={90}
+              height={60}
               priority
             />
           </div>

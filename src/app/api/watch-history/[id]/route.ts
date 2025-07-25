@@ -3,12 +3,13 @@ import { supabase } from "@/lib/supabase";
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await request.json();
     const { watched_date } = body;
-    const id = parseInt(params.id);
+    const resolvedParams = await params;
+    const id = parseInt(resolvedParams.id);
 
     if (!watched_date) {
       return NextResponse.json(

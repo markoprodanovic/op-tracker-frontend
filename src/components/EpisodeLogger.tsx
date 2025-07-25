@@ -23,9 +23,7 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [episodes, setEpisodes] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
-  const [watchedDate, setWatchedDate] = useState(
-    format(new Date(), "yyyy-MM-dd")
-  );
+  const [watchedDate, setWatchedDate] = useState<Date>(new Date());
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -87,7 +85,7 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
         },
         body: JSON.stringify({
           episode_id: selectedEpisode.id,
-          watched_date: format(watchedDate, "yyyy-MM-dd"), // Format for API
+          watched_date: format(watchedDate, "yyyy-MM-dd"),
         }),
       });
 

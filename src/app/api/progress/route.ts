@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       .select(
         `
         episode_id,
-        episode:episodes(id)
+        episode:episodes(id, release_date)
       `
       )
       .order("episode_id", { ascending: false })
@@ -64,7 +64,8 @@ export async function GET(request: NextRequest) {
       progressPercentage,
       totalWatched: totalWatched || 0,
       isCaughtUp: highestWatchedNumber >= latestAvailable,
-      lastEpisodeReleaseDate: latestEpisode?.release_date || null,
+      // @ts-expect-error - TS thinks episode is array
+      lastWatchedReleaseDate: highestWatched?.episode?.release_date || null,
     });
   } catch (error) {
     console.error("API error:", error);

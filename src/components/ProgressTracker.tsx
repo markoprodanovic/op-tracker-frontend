@@ -78,7 +78,7 @@ export default function ProgressTracker({
     progressPercentage,
     totalWatched,
     isCaughtUp,
-    lastEpisodeReleaseDate,
+    lastWatchedReleaseDate,
   } = progressData;
 
   return (
@@ -192,7 +192,7 @@ export default function ProgressTracker({
           ) : (
             <p className="text-sm">
               Last episode you watched came out on{" "}
-              <span className="font-medium">{lastEpisodeReleaseDate}</span>
+              <span className="font-medium">{lastWatchedReleaseDate}</span>
             </p>
           )}
         </div>

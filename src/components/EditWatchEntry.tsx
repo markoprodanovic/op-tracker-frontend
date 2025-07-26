@@ -52,11 +52,11 @@ export default function EditWatchEntry({
         {/* Episode Info */}
         <div>
           <p className="font-medium text-sm text-blue-900 dark:text-blue-100 transition-colors">
-            Episode {entry.episode?.id}: {entry.episode?.title}
+            {entry.episode?.id}: {entry.episode?.title}
           </p>
           {entry.episode?.arc_title && (
             <p className="text-xs text-blue-700 dark:text-blue-300 transition-colors">
-              Arc: {entry.episode.arc_title}
+              {entry.episode.arc_title}
             </p>
           )}
         </div>
@@ -104,7 +104,7 @@ export default function EditWatchEntry({
             onClick={handleSave}
             disabled={isLoading || !hasChanged}
             size="sm"
-            className="flex-1 dark:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
+            className="flex-1 dark:bg-blue-800 dark:hover:bg-blue-900 dark:text-white transition-colors"
           >
             <Save className="w-4 h-4 mr-2" />
             {isLoading ? "Saving..." : "Save"}

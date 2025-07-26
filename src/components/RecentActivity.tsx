@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, Calendar } from "lucide-react";
+import { Pencil, Trash2, Calendar, Eye } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import EditWatchEntry from "./EditWatchEntry";
 
@@ -138,26 +138,28 @@ export default function RecentActivity({
               onCancel={() => setEditingEntry(null)}
             />
           ) : (
-            <Card className="p-0 dark:bg-gray-800 dark:border-gray-700 transition-colors">
+            <Card className="p-0 dark:bg-gray-800 border-none shadow-none transition-colors">
               <CardContent className="p-3">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
+                <div className="grid grid-cols-8">
+                  <div className="col-span-7 grid grid-cols-3">
                     <p className="font-medium text-sm dark:text-white transition-colors">
-                      Episode {entry.episode?.id}: {entry.episode?.title}
+                      {entry.episode?.id}: {entry.episode?.title}
                     </p>
                     {entry.episode?.arc_title && (
-                      <p className="text-xs text-gray-600 dark:text-gray-300 mt-0.5 transition-colors">
-                        Arc: {entry.episode.arc_title}
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5 transition-colors flex items-center justify-center">
+                        {entry.episode.arc_title}
                       </p>
                     )}
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 transition-colors">
-                      Watched:{" "}
-                      {format(parseISO(entry.watched_date), "MMM dd, yyyy")}
-                    </p>
+                    <div className="flex items-center justify-center gap-2">
+                      <Eye className="text-gray-400" />
+                      <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors flex items-center justify-center">
+                        {format(parseISO(entry.watched_date), "MMM dd, yyyy")}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Action buttons */}
-                  <div className="flex gap-1 ml-2">
+                  <div className="col-span-1 flex gap-1 justify-end">
                     <Button
                       variant="ghost"
                       size="sm"

@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
 
     const { data: latestEpisode, error: latestError } = await supabase
       .from("episodes")
-      .select("id")
+      .select("id, release_date")
       .not("release_date", "is", null) // Has a release date
       .lte("release_date", today) // Released on or before today
       .order("id", { ascending: false })
@@ -64,6 +64,7 @@ export async function GET(request: NextRequest) {
       progressPercentage,
       totalWatched: totalWatched || 0,
       isCaughtUp: highestWatchedNumber >= latestAvailable,
+      lastEpisodeReleaseDate: latestEpisode?.release_date || null,
     });
   } catch (error) {
     console.error("API error:", error);

@@ -50,30 +50,28 @@ export default function HomePage() {
         </Card>
 
         {/* Log Episode Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left Column - Episode Logger */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="dark:text-white">Log Episode</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <EpisodeLogger onEpisodeLogged={triggerRefresh} />
-            </CardContent>
-          </Card>
+        {/* Left Column - Episode Logger */}
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader>
+            <CardTitle className="dark:text-white">Log Episode</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <EpisodeLogger onEpisodeLogged={triggerRefresh} />
+          </CardContent>
+        </Card>
 
-          {/* Right Column - Recent Activity */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="dark:text-white">Recent Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <RecentActivty
-                refreshTrigger={refreshTrigger}
-                onEntryDeleted={triggerRefresh}
-              />
-            </CardContent>
-          </Card>
-        </div>
+        {/* Right Column - Recent Activity */}
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader>
+            <CardTitle className="dark:text-white">Recent Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <RecentActivty
+              refreshTrigger={refreshTrigger}
+              onEntryDeleted={triggerRefresh}
+            />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -78,6 +78,7 @@ export default function ProgressTracker({
     progressPercentage,
     totalWatched,
     isCaughtUp,
+    lastEpisodeReleaseDate,
   } = progressData;
 
   return (
@@ -181,7 +182,7 @@ export default function ProgressTracker({
           className={`text-center p-3 rounded-lg border transition-colors ${
             isCaughtUp
               ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800/30 text-green-800 dark:text-green-200"
-              : "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800/30 text-blue-800 dark:text-blue-200"
+              : "bg-pink-50 dark:bg-pink-800/20 border-pink-200 dark:border-pink-700/30 text-pink-800 dark:text-pink-200"
           }`}
         >
           {isCaughtUp ? (
@@ -190,10 +191,8 @@ export default function ProgressTracker({
             </p>
           ) : (
             <p className="text-sm">
-              <span className="font-medium">
-                {latestAvailable - highestWatched} episodes
-              </span>{" "}
-              until you&apos;re caught up with the latest release
+              Last episode you watched came out on{" "}
+              <span className="font-medium">{lastEpisodeReleaseDate}</span>
             </p>
           )}
         </div>

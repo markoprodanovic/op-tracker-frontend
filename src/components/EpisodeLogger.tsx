@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,7 +28,7 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
   const [message, setMessage] = useState("");
 
   // Enhanced search episodes function
-  const searchEpisodes = async () => {
+  const searchEpisodes = useCallback(async () => {
     if (!searchTerm.trim()) {
       setEpisodes([]);
       return;
@@ -59,7 +59,7 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
     } catch (error) {
       console.error("Search error:", error);
     }
-  };
+  }, [searchTerm]);
 
   // Debounce search
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [searchTerm]);
+  }, [searchTerm, searchEpisodes]);
 
   // Log episode function
   const logEpisode = async () => {

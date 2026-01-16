@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -10,11 +10,11 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user }) {
       const adminEmail = process.env.ADMIN_EMAIL;
       return user.email === adminEmail;
     },
-    async session({ session, token }) {
+    async session({ session }) {
       session.user.isAdmin = session.user?.email === process.env.ADMIN_EMAIL;
       return session;
     },

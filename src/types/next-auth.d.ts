@@ -1,6 +1,4 @@
-import NextAuth from "next-auth";
-
-declare module "next-auth" {
+export declare module "next-auth" {
   interface Session {
     user: {
       id?: string;
@@ -20,7 +18,7 @@ declare module "next-auth" {
   }
 }
 
-declare module "next-auth/jwt" {
+export declare module "next-auth/jwt" {
   interface JWT {
     isAdmin?: boolean;
   }

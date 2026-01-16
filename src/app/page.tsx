@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useWatchHistory } from "@/hooks/useWatchHistory";
 import { useAuth } from "@/hooks/useAuth";
 import { signIn, signOut } from "next-auth/react";
+import { testConnection } from "@/lib/database-test";
 
 export default function HomePage() {
   const { refreshTrigger, triggerRefresh } = useWatchHistory();

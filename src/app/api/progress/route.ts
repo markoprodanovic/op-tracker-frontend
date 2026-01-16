@@ -3,14 +3,14 @@ import { supabase } from "@/lib/supabase";
 
 export async function GET(request: NextRequest) {
   try {
-    // Get the latest released episode (release_date <= today)
+    // Get the latest released episode (airdate <= today)
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
 
     const { data: latestEpisode, error: latestError } = await supabase
-      .from("episodes")
-      .select("id, release_date")
-      .not("release_date", "is", null) // Has a release date
-      .lte("release_date", today) // Released on or before today
+      .from("scraped_episodes")
+      .select("id, airdate")
+      .not("airdate", "is", null) // Has an airdate
+      .lte("airdate", today) // Released on or before today
       .order("id", { ascending: false })
       .limit(1)
       .single();
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       .select(
         `
         episode_id,
-        episode:episodes(id, release_date)
+        episode:episodes_with_arcs(id, airdate)
       `
       )
       .order("episode_id", { ascending: false })
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
       totalWatched: totalWatched || 0,
       isCaughtUp: highestWatchedNumber >= latestAvailable,
       // @ts-expect-error - TS thinks episode is array
-      lastWatchedReleaseDate: highestWatched?.episode?.release_date || null,
+      lastWatchedReleaseDate: highestWatched?.episode?.airdate || null,
     });
   } catch (error) {
     console.error("API error:", error);

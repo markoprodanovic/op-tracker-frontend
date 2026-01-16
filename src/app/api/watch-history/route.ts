@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
       .select(
         `
                 *,
-                episode: episodes(*)
+                episode: episodes_with_arcs(*)
         `
       )
       .order("watched_date", { ascending: false });
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       .select(
         `
         *,
-        episode:episodes(*)
+        episode:episodes_with_arcs(*)
       `
       )
       .single();

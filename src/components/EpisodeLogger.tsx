@@ -155,9 +155,9 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
                     <p className="font-medium dark:text-white transition-colors">
                       Episode {episode.id}: {episode.title}
                     </p>
-                    {episode.arc_title && (
+                    {episode.arc_name && (
                       <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors">
-                        Arc: {episode.arc_title}
+                        Arc: {episode.arc_name}
                       </p>
                     )}
                   </div>
@@ -178,9 +178,9 @@ export default function EpisodeLogger({ onEpisodeLogged }: EpisodeLoggerProps) {
             <p className="font-medium text-blue-900 dark:text-blue-100 transition-colors">
               Episode {selectedEpisode.id}: {selectedEpisode.title}
             </p>
-            {selectedEpisode.arc_title && (
+            {selectedEpisode.arc_name && (
               <p className="text-sm text-blue-700 dark:text-blue-300 transition-colors">
-                Arc: {selectedEpisode.arc_title}
+                Arc: {selectedEpisode.arc_name}
               </p>
             )}
           </div>

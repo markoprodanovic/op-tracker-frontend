@@ -145,9 +145,9 @@ export default function RecentActivity({
                     <p className="font-medium text-sm dark:text-white transition-colors">
                       {entry.episode?.id}: {entry.episode?.title}
                     </p>
-                    {entry.episode?.arc_title && (
+                    {entry.episode?.arc_name && (
                       <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5 transition-colors flex items-center justify-center">
-                        {entry.episode.arc_title}
+                        {entry.episode.arc_name}
                       </p>
                     )}
                     <div className="flex items-center justify-center gap-2">

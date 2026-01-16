@@ -15,13 +15,13 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get("start_date");
     const endDate = searchParams.get("end_date");
 
-    // Build query for watch history with episode details
+    // Build query for watch history with episode details using new episodes_with_arcs view
     let query = supabase
       .from("watch_history")
       .select(
         `
         watched_date,
-        episode:episodes(arc_title)
+        episode:episodes_with_arcs(arc_name)
       `
       )
       .order("watched_date", { ascending: true });
@@ -101,7 +101,7 @@ function processWatchHistoryWithGaps(
   // Group actual watch data by date
   const watchedByDate = watchHistory.reduce((acc, entry) => {
     const date = entry.watched_date;
-    const arc = entry.episode?.arc_title || "Unknown Arc";
+    const arc = entry.episode?.arc_name || "Unknown Arc";
 
     if (!acc[date]) {
       acc[date] = {};

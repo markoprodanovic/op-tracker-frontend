@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const episodeId = searchParams.get("episode_id");
 
     let query = supabase
-      .from("episodes")
+      .from("episodes_with_arcs")
       .select("*")
       .order("id", { ascending: true });
 
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     }
     // Search by title/arc text
     else if (search) {
-      query = query.or(`title.ilike.%${search}%,arc_title.ilike.%${search}%`);
+      query = query.or(`title.ilike.%${search}%,arc_name.ilike.%${search}%`);
     }
 
     // Add limit if provided (but not for ID search)

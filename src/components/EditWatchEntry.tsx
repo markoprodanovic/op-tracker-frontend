@@ -54,9 +54,9 @@ export default function EditWatchEntry({
           <p className="font-medium text-sm text-blue-900 dark:text-blue-100 transition-colors">
             {entry.episode?.id}: {entry.episode?.title}
           </p>
-          {entry.episode?.arc_title && (
+          {entry.episode?.arc_name && (
             <p className="text-xs text-blue-700 dark:text-blue-300 transition-colors">
-              {entry.episode.arc_title}
+              {entry.episode.arc_name}
             </p>
           )}
         </div>

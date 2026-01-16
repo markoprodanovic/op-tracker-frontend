@@ -25,7 +25,7 @@ export async function PUT(
       .select(
         `
         *,
-        episode:episodes(*)
+        episode:episodes_with_arcs(*)
       `
       )
       .single();

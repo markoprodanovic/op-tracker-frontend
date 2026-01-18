@@ -15,6 +15,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { format, subDays, subMonths } from "date-fns";
+import CustomTooltip from "./CustomTooltip";
 
 interface AnalyticsDashboardProps {
   refreshTrigger: number;
@@ -46,7 +47,7 @@ export default function AnalyticsDashboard({
   const [episodesThisWeek, setEpisodesThisWeek] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [timeRange, setTimeRange] = useState("30days"); // '7days', '30days', '3months', 'all'
+  const [timeRange, setTimeRange] = useState("30days"); // '7days', '30days', '3months'
 
   // Get unique arcs for dynamic colors
   const [arcColors, setArcColors] = useState({});
@@ -58,29 +59,27 @@ export default function AnalyticsDashboard({
       let url = "/api/analytics";
 
       // Add date filters based on time range
-      if (timeRange !== "all") {
-        const endDate = new Date();
-        let startDate: Date;
+      const endDate = new Date();
+      let startDate: Date;
 
-        switch (timeRange) {
-          case "7days":
-            startDate = subDays(endDate, 7);
-            break;
-          case "30days":
-            startDate = subDays(endDate, 30);
-            break;
-          case "3months":
-            startDate = subMonths(endDate, 3);
-            break;
-          default:
-            startDate = subDays(endDate, 30);
-        }
-
-        url += `?start_date=${format(
-          startDate,
-          "yyyy-MM-dd"
-        )}&end_date=${format(endDate, "yyyy-MM-dd")}`;
+      switch (timeRange) {
+        case "7days":
+          startDate = subDays(endDate, 7);
+          break;
+        case "30days":
+          startDate = subDays(endDate, 30);
+          break;
+        case "3months":
+          startDate = subMonths(endDate, 3);
+          break;
+        default:
+          startDate = subDays(endDate, 30);
       }
+
+      url += `?start_date=${format(
+        startDate,
+        "yyyy-MM-dd",
+      )}&end_date=${format(endDate, "yyyy-MM-dd")}`;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -94,7 +93,7 @@ export default function AnalyticsDashboard({
         const arcs = new Set();
         data.chartData?.forEach((day) => {
           Object.keys(day).forEach((key) => {
-            if (key !== "date" && key !== "fullDate") {
+            if (key !== "date") {
               arcs.add(key);
             }
           });
@@ -119,40 +118,6 @@ export default function AnalyticsDashboard({
   useEffect(() => {
     fetchAnalytics();
   }, [refreshTrigger, fetchAnalytics]);
-
-  // Custom tooltip with gap handling
-  const CustomTooltip = (props) => {
-    const { active, payload, label } = props;
-
-    if (active && payload && payload.length) {
-      const total = payload.reduce((sum, entry) => sum + (entry.value || 0), 0);
-
-      // Handle days with no episodes
-      if (total === 0) {
-        return (
-          <div className="bg-white p-3 border rounded-lg shadow-lg">
-            <p className="font-medium text-gray-900">{label}</p>
-            <p className="text-sm text-gray-500 italic">No episodes watched</p>
-          </div>
-        );
-      }
-
-      return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900">{label}</p>
-          <p className="text-sm text-gray-600 mb-2">Total: {total} episodes</p>
-          {payload
-            .filter((entry) => entry.value > 0)
-            .map((entry, index) => (
-              <p key={index} className="text-sm" style={{ color: entry.color }}>
-                {entry.dataKey}: {entry.value} episodes
-              </p>
-            ))}
-        </div>
-      );
-    }
-    return null;
-  };
 
   if (isLoading) {
     return (
@@ -250,13 +215,6 @@ export default function AnalyticsDashboard({
         >
           Last 3 Months
         </Button>
-        <Button
-          variant={timeRange === "all" ? "default" : "outline"}
-          size="sm"
-          onClick={() => setTimeRange("all")}
-        >
-          All Time
-        </Button>
       </div>
 
       {/* Chart */}
@@ -282,7 +240,7 @@ export default function AnalyticsDashboard({
                   />
                   <YAxis tick={{ fontSize: 12 }} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Legend />
+                  <Legend wrapperStyle={{ paddingTop: "20px" }} />
 
                   {/* Dynamic bars for each arc */}
                   {Object.keys(arcColors).map((arc) => (

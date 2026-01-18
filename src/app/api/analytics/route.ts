@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
         `
         watched_date,
         episode:episodes_with_arcs(arc_name)
-      `
+      `,
       )
       .order("watched_date", { ascending: true });
 
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
       console.error("Error fetching analytics data:", error);
       return NextResponse.json(
         { error: "Failed to fetch analytics data" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
     const chartData = processWatchHistoryWithGaps(
       watchHistory || [],
       startDate,
-      endDate
+      endDate,
     );
 
     return NextResponse.json({
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
     console.error("API error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
 function processWatchHistoryWithGaps(
   watchHistory,
   startDate?: string | null,
-  endDate?: string | null
+  endDate?: string | null,
 ) {
   if (!watchHistory || watchHistory.length === 0) return [];
 
@@ -124,8 +124,7 @@ function processWatchHistoryWithGaps(
     const watchedData = watchedByDate[dateString] || {};
 
     return {
-      date: format(date, "MMM dd"),
-      fullDate: dateString,
+      date: format(date, "MMM dd yyyy"),
       ...watchedData,
     };
   });
